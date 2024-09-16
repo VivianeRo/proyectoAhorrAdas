@@ -1,0 +1,25 @@
+@media (max-width: 782px) {
+    .pantallaPrincipal{
+        flex-direction: column;
+
+    }
+    .botonNav{
+        display: flex;
+
+    }
+    ul{
+        display:flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+    }
+    nav{
+        display: flex;
+        justify-content: space-around;
+    }
+    .nuevaOperacion {
+        
+    }
+    
+
+}
