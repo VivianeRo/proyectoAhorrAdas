@@ -17,8 +17,24 @@
         display: flex;
         justify-content: space-around;
     }
-    .nuevaOperacion {
-        
+    .containerDescripcionFormulario {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+    }
+    .containerDescripcionFormulario p {
+        display: none;
+    }
+    .fecha {
+        display: none;
+    }
+    .containerDescripcionFormulario button {
+        margin:0;
+    }
+    .containerDescripcionFormularioBoton {
+        display: flex;
     }
     
 

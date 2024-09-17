@@ -182,6 +182,7 @@
         </section>
 
       </div>
+    </div>
         
         <!-- final de la seccion filtros -->
         
@@ -239,22 +240,24 @@
 
           
         </div>
+      
       </section>
 
        <!--Seccion nueva operacion-->
 
-       <section id="nueva-operacion" class="mt-[50px] mb-[50px] m-auto ">
-        <div
+       <section id="nueva-operacion" class="mt-[50px] mb-[50px] m-auto hidden ">
+        <div 
           class="w-[80%] flex-col border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[20px] m-auto"
         >
           <h2 class="font-bold text-2xl mb-[6px]">Nueva Operación</h2>
 
+         <form id="descripcionFormulario">
           <label for="descripcion" class="block my-[3px] font-light text-base">
             Descripción
           </label>
           <input
             type="text"
-            id="input-descripcion-operacion"
+            id="inputDescripcionOperacion"
             name="descripcion"
             class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
           />
@@ -270,7 +273,7 @@
           />
           <label class="block my-[3px] font-light text-base"> Tipo </label>
           <select
-            id="select-tipo-operacion"
+            id="selectTipoOperacion"
             class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
           >
             <option value="">Selecciona una opción</option>
@@ -280,7 +283,7 @@
 
           <label class="block my-[3px] font-light text-base"> Categoría </label>
           <select
-            id="select-categoria-operacion"
+            id="selectCategoriaOperacion"
             class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
           >
             <option value="">Selecciona una opción</option>
@@ -301,7 +304,7 @@
             name="date"
             class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
           />
-          <div class="flex justify-end gap-x-3 mt-3">
+          <form class="flex justify-end gap-x-3 mt-3">
             <button
               id="button-cancelar-operacion"
               class="font-normal text-sm bg-gray-200 px-3 py-2 rounded-md text-slate-950 hover:bg-gray-300 hover:transition-all"
@@ -314,8 +317,39 @@
             >
               Agregar
             </button>
+          </form>
           </div>
+          /form>
         </div>
+      </section>
+
+      <section id="containerDescripcionFormulario" class=" w-[80%] mt-[50px] mb-[50px] m-auto">
+      <div id="containerDescripcionFormularioNuevo" class=" containerDescripcionFormulario flex justify-between border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[20px] m-auto">
+       <div>
+        <p class="mb-[10px]">Descripcion</p>
+        <span>auto</span>
+       </div>
+       <div>
+        <p class="mb-[10px]">Categoria</p>
+        <span class="bg-emerald-100 rounded p-1 m-2">educacion</span>
+       </div>
+       <div>
+        <p class="mb-[10px]">Monto</p>
+        <span>555</span>
+       </div>
+       <div class="fecha">
+        <p class="mb-[10px]">Fecha</p>
+        <span>15/05/20024</span>
+       </div>
+       <div class="containerDescripcionFormularioBoton">
+        <p>Acciones</p>
+        <button class="text-cyan-600 p-1 m-2 gap-2">editar</button>
+        <button class="text-cyan-600 p-1 m-2 gap-2">eliminar</button>
+       </div>
+
+
+      </div>
+
       </section>
 
       

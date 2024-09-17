@@ -131,7 +131,109 @@ botonCargaCategoria.addEventListener('click', function(e) {
 cargarSelectCategoriasFiltros();
 cargarCategoriasEnLista();
 
+const operacionesBotton = document.getElementById('operacionesBotton');
+const nuevaOperacion = document.getElementById('nueva-operacion')
 
+operacionesBotton.addEventListener('click',function(e){
+    pantallaPrincipal.style.display= 'none';
+    nuevaOperacion.style.display= 'flex'
+
+})
+const descripcionFormulario = document.getElementById('descripcionFormulario');
+
+// SECCION DESCRIPCION
+  const descripcionFormularioInicial=[
+    'id','descripcion','monto','tipo','categoria','fecha'
+  ]
+  const consultarDescripcion = () => {
+    const descripcion = localStorage.getItem("descripciones");
+  
+    if (descripcion) {
+      return JSON.parse(descripcion);
+    } else {
+      
+      localStorage.setItem("descripciones", JSON.stringify(descripcionFormularioInicial));
+    }
+  };
+  
+  consultarDescripcion();
+  console.log('funcionando',consultarDescripcion);
+  console.log(descripcionFormularioInicial)
+
+  const descripcionFormularioNuevo = () =>{
+    const containerDescripcionFormularioNuevo = document.getElementById('containerDescripcionFormularioNuevo');
+    containerDescripcionFormularioNuevo.innerHTML = '';
+    const formulario = consultarDescripcion();
+    formulario.forEach(descripcion =>{
+      containerDescripcionFormularioNuevo.innerHTML += `<div>
+        <p class="mb-[10px]"  id="${descripcion.id}>${descripcion}</p>
+        <span id="${descripcion.id}>${descripcion.descripcion}</span>
+       </div>
+        <p class="mb-[10px]" id="${monto.id}>${monto}</p>
+        <span>${monto.monto}</span>
+         <div class="fecha" id="${fecha.id}>
+        <p class="mb-[10px]">id="${fecha.data}</p>
+        <span>15/05/20024</span>
+       </div>
+       <div class="containerDescripcionFormularioBoton">
+        <p>Acciones</p>
+        <button class="text-cyan-600 p-1 m-2 gap-2">editar</button>
+        <button class="text-cyan-600 p-1 m-2 gap-2">eliminar</button>
+       </div>
+       `
+    });
+    /* selectCategoriasFiltros.innerHTML = ""; 
+  const categorias = consultarCategorias();
+
+  categorias.forEach(categoria => {
+      selectCategoriasFiltros.innerHTML += `
+          <option value="${categoria.nombre}" id="${categoria.id}">${categoria.nombre}</option>
+      `;
+  }); */
+  }
+
+  descripcionFormulario.addEventListener('submit', function(e){
+    const operacion = {
+      id: uuidv4(),
+      descripcion: e.target.descripcion.value,
+      monto: e.target.monto.value,
+      tipo:e.target.selectTipoOperacion.value,
+      categoria:e.target.selectCategoriaOperacion.value,
+      fecha:e.target.date.value
+    }
+
+
+  })
+ 
+  
+  /*const cargarCategoriasSelectFiltros = () => {
+    const selectCategoriasFiltro = document.getElementById(
+      "select-filtros-categorias"
+    );
+  
+    selectCategoriasFiltro.innerHTML = "";
+  
+    consultarCategorias().forEach((categoria) => {
+      // selectCategoriasFiltro.innerHTML += `
+      //     <option value="${categoria.nombre.toLowerCase()}" class="" id="${
+      //   categoria.id
+      // }" >${categoria.nombre}</option>
+      //     `;
+  
+      selectCategoriasFiltro.innerHTML += `
+         <option value="${categoria.nombre.toLowerCase()}" class="" id="${
+        categoria.id
+      }">${categoria.nombre}</option>`;
+    });
+  
+    // Esta funcionalidad de editar la vemos la próxima
+    //   const btnEditarCategoria = document.getElementById("idDelBoton")
+  
+    //   btnEditarCategoria.addEventListener("click", () => editarCategoria())
+  };
+  console.log(cargarCategoriasSelectFiltros)
+  
+  cargarCategoriasSelectFiltros();*/
 
 
 
