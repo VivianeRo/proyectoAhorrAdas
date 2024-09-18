@@ -235,6 +235,14 @@ const descripcionFormulario = document.getElementById('descripcionFormulario');
   
   cargarCategoriasSelectFiltros();*/
 
+//para que aparesca el formulario
+
+
+
+// Seccion operacion
+const operacion = JSON.parse(localStorage.getItem("operaciones")) || [];
+
+
 
 
 
