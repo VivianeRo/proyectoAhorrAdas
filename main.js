@@ -29,7 +29,7 @@ navCategoria.addEventListener('click', function(){
      seccionReportes.style.display ='none'
 
 
-    //console.log('funcionando')
+    
 
     
 
@@ -40,6 +40,7 @@ navBalance.addEventListener('click', function(){
     seccionReportes.style.display ='none'
     seccionCategorias.style.display ='none'
      seccionReportes.style.display ='none'
+     nuevaOperacion.style.display= 'none'
 
 })
 
@@ -78,13 +79,19 @@ const consultarCategorias = () => {
 
 const cargarSelectCategoriasFiltros = () => {
   const selectCategoriasFiltros = document.getElementById('selectCategoriaFiltros');
+  const categoriaOperaciones = document.getElementById('categoriaOperaciones');
+ 
   selectCategoriasFiltros.innerHTML = ""; 
+  categoriaOperaciones.innerHTML = "";
   const categorias = consultarCategorias();
 
   categorias.forEach(categoria => {
       selectCategoriasFiltros.innerHTML += `
           <option value="${categoria.nombre}" id="${categoria.id}">${categoria.nombre}</option>
       `;
+      categoriaOperaciones.innerHTML += `
+      <option value="${categoria.nombre}" id="${categoria.id}">${categoria.nombre}</option>
+  `;
   });
 };
 
@@ -96,10 +103,74 @@ const cargarCategoriasEnLista = () => {
 
   categorias.forEach(categoria => {
       categoriaLista.innerHTML += `
+        <div class="flex gap-[30px] justify-between">
           <p class="bg-emerald-100 rounded p-1 m-2" id="${categoria.id}">${categoria.nombre}</p>
+          <button class="text-cyan-600 btn-edit" data-id="${categoria.id}" data-nombre="${categoria.nombre}">Editar</button>
+          <button class="text-cyan-600 btn-delete" data-id="${categoria.id}">Eliminar</button>
+        </div>
       `;
+    
+  });
+   
+   document.querySelectorAll('.btn-delete').forEach(button => {
+    button.addEventListener('click', eliminarCategoria);
+  });
+
+  document.querySelectorAll('.btn-edit').forEach(button => {
+    button.addEventListener('click', editarCategoria);
   });
 };
+const eliminarCategoria = (e) => {
+  const categoriaId = e.target.getAttribute('data-id');
+  let categorias = consultarCategorias();
+  
+  
+  categorias = categorias.filter(categoria => categoria.id !== categoriaId);
+  
+  
+  localStorage.setItem('categorias', JSON.stringify(categorias));
+
+  
+  cargarCategoriasEnLista();
+  cargarSelectCategoriasFiltros();
+};
+const editarCategoria = (e) => {
+  const categoriaId = e.target.getAttribute('data-id');
+  const categoriaNombre = e.target.getAttribute('data-nombre');
+  
+  
+  document.getElementById('categoriaId').value = categoriaId;
+  document.getElementById('nombreCategoria').value = categoriaNombre;
+  
+  
+  document.getElementById('formularioEditarCategoria').style.display = 'block';
+   seccionCategorias.style.display ='none'
+
+};
+document.getElementById('editarCategoriaForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const categoriaId = document.getElementById('categoriaId').value;
+  const nombreCategoria = document.getElementById('nombreCategoria').value;
+
+  let categorias = consultarCategorias();
+  const categoriaIndex = categorias.findIndex(categoria => categoria.id === categoriaId);
+
+  if (categoriaIndex !== -1) {
+    categorias[categoriaIndex].nombre = nombreCategoria;  
+    localStorage.setItem('categorias', JSON.stringify(categorias));  
+  }
+
+  
+  cargarCategoriasEnLista();
+  cargarSelectCategoriasFiltros();
+  document.getElementById('formularioEditarCategoria').style.display = 'none';
+  seccionCategorias.style.display='flex'
+});
+
+
+
+
 
 
 const botonCargaCategoria = document.getElementById('botonCargaCategoria');
@@ -131,6 +202,10 @@ botonCargaCategoria.addEventListener('click', function(e) {
 cargarSelectCategoriasFiltros();
 cargarCategoriasEnLista();
 
+
+
+
+
 const operacionesBotton = document.getElementById('operacionesBotton');
 const nuevaOperacion = document.getElementById('nueva-operacion')
 
@@ -139,108 +214,14 @@ operacionesBotton.addEventListener('click',function(e){
     nuevaOperacion.style.display= 'flex'
 
 })
-const descripcionFormulario = document.getElementById('descripcionFormulario');
+
 
 // SECCION DESCRIPCION
-  const descripcionFormularioInicial=[
-    'id','descripcion','monto','tipo','categoria','fecha'
-  ]
-  const consultarDescripcion = () => {
-    const descripcion = localStorage.getItem("descripciones");
-  
-    if (descripcion) {
-      return JSON.parse(descripcion);
-    } else {
-      
-      localStorage.setItem("descripciones", JSON.stringify(descripcionFormularioInicial));
-    }
-  };
-  
-  consultarDescripcion();
-  console.log('funcionando',consultarDescripcion);
-  console.log(descripcionFormularioInicial)
-
-  const descripcionFormularioNuevo = () =>{
-    const containerDescripcionFormularioNuevo = document.getElementById('containerDescripcionFormularioNuevo');
-    containerDescripcionFormularioNuevo.innerHTML = '';
-    const formulario = consultarDescripcion();
-    formulario.forEach(descripcion =>{
-      containerDescripcionFormularioNuevo.innerHTML += `<div>
-        <p class="mb-[10px]"  id="${descripcion.id}>${descripcion}</p>
-        <span id="${descripcion.id}>${descripcion.descripcion}</span>
-       </div>
-        <p class="mb-[10px]" id="${monto.id}>${monto}</p>
-        <span>${monto.monto}</span>
-         <div class="fecha" id="${fecha.id}>
-        <p class="mb-[10px]">id="${fecha.data}</p>
-        <span>15/05/20024</span>
-       </div>
-       <div class="containerDescripcionFormularioBoton">
-        <p>Acciones</p>
-        <button class="text-cyan-600 p-1 m-2 gap-2">editar</button>
-        <button class="text-cyan-600 p-1 m-2 gap-2">eliminar</button>
-       </div>
-       `
-    });
-    /* selectCategoriasFiltros.innerHTML = ""; 
-  const categorias = consultarCategorias();
-
-  categorias.forEach(categoria => {
-      selectCategoriasFiltros.innerHTML += `
-          <option value="${categoria.nombre}" id="${categoria.id}">${categoria.nombre}</option>
-      `;
-  }); */
-  }
-
-  descripcionFormulario.addEventListener('submit', function(e){
-    const operacion = {
-      id: uuidv4(),
-      descripcion: e.target.descripcion.value,
-      monto: e.target.monto.value,
-      tipo:e.target.selectTipoOperacion.value,
-      categoria:e.target.selectCategoriaOperacion.value,
-      fecha:e.target.date.value
-    }
-
-
-  })
- 
-  
-  /*const cargarCategoriasSelectFiltros = () => {
-    const selectCategoriasFiltro = document.getElementById(
-      "select-filtros-categorias"
-    );
-  
-    selectCategoriasFiltro.innerHTML = "";
-  
-    consultarCategorias().forEach((categoria) => {
-      // selectCategoriasFiltro.innerHTML += `
-      //     <option value="${categoria.nombre.toLowerCase()}" class="" id="${
-      //   categoria.id
-      // }" >${categoria.nombre}</option>
-      //     `;
-  
-      selectCategoriasFiltro.innerHTML += `
-         <option value="${categoria.nombre.toLowerCase()}" class="" id="${
-        categoria.id
-      }">${categoria.nombre}</option>`;
-    });
-  
-    // Esta funcionalidad de editar la vemos la próxima
-    //   const btnEditarCategoria = document.getElementById("idDelBoton")
-  
-    //   btnEditarCategoria.addEventListener("click", () => editarCategoria())
-  };
-  console.log(cargarCategoriasSelectFiltros)
-  
-  cargarCategoriasSelectFiltros();*/
-
-//para que aparesca el formulario
-
-
 
 // Seccion operacion
 const operacion = JSON.parse(localStorage.getItem("operaciones")) || [];
+
+
 
 
 

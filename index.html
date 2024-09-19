@@ -63,8 +63,8 @@
 
     
           <!--agregue hidden hay que sacar cuando termino -->
-          <seccion>
-          <div
+          <section id="d">
+          <div 
             id="seccionBalance"
             class="flex-col border-solid border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[30px] m-[20px]"
           >
@@ -158,8 +158,9 @@
               </select>
             </div>
           </div>
-        </seccion>
+        </section>
         <section>
+        
           <div
           id="operaciones"
           class="flex-col border-solid border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[30px] m-[20px]"
@@ -174,15 +175,16 @@
             </button>
           </div>
 
-          <picture class="flex justify-center m-8"
-            ><img
-              src="imagenes/undraw_financial_data_re_p0fl.svg"
-              
-          /></picture>
+          <picture class="flex justify-center m-8">
+            <img
+              src="imagenes/undraw_financial_data_re_p0fl.svg">
+            </picture>
+          </div>
         </section>
 
       </div>
-    </div>
+    
+  
         
         <!-- final de la seccion filtros -->
         
@@ -193,7 +195,7 @@
       <!-- Seccion Categoria input-->
       <section id="seccionCategorias" class="my-5 mx-auto hidden">
         <!-- clase hidden agregada -->
-        <div
+        <div id="e"
           class="  border-solid border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[30px] m-auto py-10"
         >
           <h2 class="font-bold text-2xl my-2">Categorías</h2>
@@ -222,7 +224,7 @@
               
             </div>
           </div>
-        </div>
+        
       </section>
 
       <!--Seccion Reporte donde estan las operacciones -->
@@ -253,7 +255,7 @@
           </label>
           <input
             type="text"
-            id="inputDescripcionOperacion"
+            id="inputOperacion"
             name="descripcion"
             class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
           />
@@ -269,7 +271,7 @@
           />
           <label class="block my-[3px] font-light text-base"> Tipo </label>
           <select
-            id="selectTipoOperacion"
+            id=""
             class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
           >
             <option value="">Selecciona una opción</option>
@@ -278,8 +280,7 @@
           >xx
 
           <label class="block my-[3px] font-light text-base"> Categoría </label>
-          <select
-            id="selectCategoriaOperacion"
+          <select id="categoriaOperaciones"
             class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
           >
             <option value="">Selecciona una opción</option>
@@ -314,12 +315,12 @@
               Agregar
             </button>
           </form>
-          </div>
-          /form>
+          
+          
         </div>
       </section>
 
-      <section id="containerDescripcionFormulario" class=" w-[80%] mt-[50px] mb-[50px] m-auto">
+      <section id="containerDescripcionFormulario" class=" w-[80%] mt-[50px] mb-[50px] m-auto hidden">
       <div id="containerDescripcionFormularioNuevo" class=" containerDescripcionFormulario flex justify-between border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[20px] m-auto">
        <div>
         <p class="mb-[10px]">Descripcion</p>
@@ -347,6 +348,23 @@
       </div>
 
       </section>
+
+
+      <div id="formularioEditarCategoria"  class="w-[80%] flex-col border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[20px] m-auto hidden" >
+        <h3 class="font-bold text-2xl mb-[6px]">Categoría</h3>
+        <form id="editarCategoriaForm" class="flex items-center gap-[10px]">
+          <!-- Campo oculto para el ID de la categoría -->
+          <input type="hidden" id="categoriaId" >
+          
+          <!-- Campo para el nombre de la categoría -->
+          <label for="nombreCategoria">Categoría:</label>
+          <input type="text" id="nombreCategoria"  class=" border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500" required>
+          
+          <!-- Botón para guardar los cambios -->
+          <button type="submit"  class="font-normal text-sm bg-emerald-500 px-3 py-2 rounded-md text-slate-50 hover:bg-emerald-600 hover:transition-all">Guardar</button>
+        </form>
+      </div>
+      
 
       
     
