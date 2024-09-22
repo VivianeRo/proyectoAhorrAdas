@@ -179,6 +179,20 @@
             <img
               src="imagenes/undraw_financial_data_re_p0fl.svg">
             </picture>
+            <section id="containerDescripcionFormulario" class="mt-[50px]">
+              <div id="containerDescripcionFormularioNuevo" class="flex flex-col space-y-4 hidden">
+                <div class="flex gap-[30px] pl-[30px]">
+                  <h3 class="mb-[10px]">Descripción</h3>
+                  <h3 class="mb-[10px]">Categoría</h3>
+                  <h3 class="mb-[10px]">Monto</h3>
+                  <h3 class="mb-[10px]">Fecha</h3>
+                  <h3>Acciones</h3> 
+                </div>
+              </div>
+              
+            </section>
+          </div>
+          
           </div>
         </section>
 
@@ -243,46 +257,24 @@
 
        <!--Seccion nueva operacion-->
 
-       <section id="nueva-operacion" class="mt-[50px] mb-[50px] m-auto hidden ">
-        <div 
-          class="w-[80%] flex-col border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[20px] m-auto"
-        >
-          <h2 class="font-bold text-2xl mb-[6px]">Nueva Operación</h2>
-
-         <form id="operacion">
-          <label for="descripcion" class="block my-[3px] font-light text-base">
-            Descripción
-          </label>
-          <input
-            type="text"
-            id="inputOperacion"
-            name="descripcion"
-            class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
-          />
-
-          <label for="monto" class="block my-[3px] font-light text-base">
-            Monto
-          </label>
-          <input
-            type="number"
-            id="input-monto-operacion"
-            name="monto"
-            class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
-          />
-          <label class="block my-[3px] font-light text-base"> Tipo </label>
-          <select
-            id=""
-            class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
-          >
+       <section id="formulario-operacion">
+        <!-- Formulario para ingresar nuevas operaciones -->
+        <form id="operacion" class="flex flex-col operacionFormulario hidden w-[80%] mt-[100px]  border-solid border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[30px] m-auto py-10">
+          <label for="descripcion">Descripción</label>
+          <input type="text" id="inputOperacion" name="descripcion" class="border border-gray-400 rounded mb-[5px]" required>
+      
+          <label for="monto">Monto</label>
+          <input type="number" id="input-monto-operacion" name="monto" class="border border-gray-400 rounded mb-[5px]" required>
+      
+          <label for="tipo">Tipo</label>
+          <select id="tipo-operacion" class="border border-gray-400 rounded mb-[5px]" required>
             <option value="">Selecciona una opción</option>
             <option value="gasto">Gasto</option>
-            <option value="ganancia">Ganancia</option></select
-          >xx
-
-          <label class="block my-[3px] font-light text-base"> Categoría </label>
-          <select id="categoriaOperaciones"
-            class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
-          >
+            <option value="ganancia">Ganancia</option>
+          </select>
+      
+          <label for="categoria">Categoría</label>
+          <select id="categoriaOperaciones" class="border border-gray-400 rounded mb-[5px]" required>
             <option value="">Selecciona una opción</option>
             <option value="comida">Comida</option>
             <option value="servicios">Servicios</option>
@@ -291,64 +283,18 @@
             <option value="transporte">Transporte</option>
             <option value="trabajo">Trabajo</option>
           </select>
-
-          <label for="date" class="block my-[3px] font-light text-base">
-            Fecha
-          </label>
-          <input
-            type="date"
-            id="input-fecha-operacion"
-            name="date"
-            class="block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
-          />
-          <form class="flex justify-end gap-x-3 mt-3">
-            <button
-              id="button-cancelar-operacion"
-              class="font-normal text-sm bg-gray-200 px-3 py-2 rounded-md text-slate-950 hover:bg-gray-300 hover:transition-all"
-            >
-              Cancelar
-            </button>
-            <button
-              id="button-agregar-operacion"
-              class="font-normal text-sm bg-emerald-500 px-3 py-2 rounded-md text-slate-50 hover:bg-emerald-600 hover:transition-all"
-            >
-              Agregar
-            </button>
-          </form>
-          
-          
-        </div>
+      
+          <label for="date">Fecha</label>
+          <input type="date" id="input-fecha-operacion" name="date" class="border border-gray-400 rounded mb-[5px]" required>
+      
+          <div class="flex justify-end gap-x-3 mt-3">
+            <button id="button-cancelar-operacion" type="button" class="bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-md px-4 py-2">Cancelar</button>
+            <button id="button-agregar-operacion" type="submit" class="bg-green-500 text-white hover:bg-green-600 rounded-md px-4 py-2">Agregar</button>
+          </div>
+        </form>
       </section>
-
-      <section id="containerDescripcionFormulario" class=" w-[80%] mt-[50px] mb-[50px] m-auto hidden">
-      <div id="containerDescripcionFormularioNuevo" class=" containerDescripcionFormulario flex justify-between border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[20px] m-auto">
-       <div>
-        <p class="mb-[10px]">Descripcion</p>
-        <span>auto</span>
-       </div>
-       <div>
-        <p class="mb-[10px]">Categoria</p>
-        <span class="bg-emerald-100 rounded p-1 m-2">educacion</span>
-       </div>
-       <div>
-        <p class="mb-[10px]">Monto</p>
-        <span>555</span>
-       </div>
-       <div class="fecha">
-        <p class="mb-[10px]">Fecha</p>
-        <span>15/05/20024</span>
-       </div>
-       <div class="containerDescripcionFormularioBoton">
-        <p>Acciones</p>
-        <button class="text-cyan-600 p-1 m-2 gap-2">editar</button>
-        <button class="text-cyan-600 p-1 m-2 gap-2">eliminar</button>
-       </div>
-
-
-      </div>
-
-      </section>
-
+      
+    
 
       <div id="formularioEditarCategoria"  class="w-[80%] flex-col border-[0.5px] border-red-100 shadow-lg shadow-red-100 rounded-md p-[20px] m-auto hidden" >
         <h3 class="font-bold text-2xl mb-[6px]">Categoría</h3>
