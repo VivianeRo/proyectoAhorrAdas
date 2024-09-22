@@ -206,70 +206,74 @@ cargarCategoriasEnLista();
 
 
 
-const operacionesBotton = document.getElementById('operacionesBotton');
-const nuevaOperacion = document.getElementById('nueva-operacion')
-
-operacionesBotton.addEventListener('click',function(e){
-    pantallaPrincipal.style.display= 'none';
-    nuevaOperacion.style.display= 'flex'
-
-})
-
 
 // SECCION DESCRIPCION
+const operacionesBotton = document.getElementById('operacionesBotton')
+const nuevaOperacion = document.getElementById('nueva-operacion')
+const operacion = document.getElementById('operacion')
+operacionesBotton.addEventListener('click', function(e){
+  pantallaPrincipal.style.display = 'none'
+  operacion.style.display = 'flex'
+})
 
-// Seccion operacion
-const operacion = JSON.parse(localStorage.getItem("operaciones")) || [];
+document.getElementById('button-agregar-operacion').addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const descripcion = document.getElementById('inputOperacion').value.trim();
+  const monto = document.getElementById('input-monto-operacion').value.trim();
+  const tipo = document.getElementById('tipo-operacion').value;
+  const categoria = document.getElementById('categoriaOperaciones').value;
+  const fecha = document.getElementById('input-fecha-operacion').value;
+
+  
+  if (!descripcion || !monto || !tipo || !categoria || !fecha) {
+    return; 
+  }
+
+  const nuevaOperacion = {
+    id: uuidv4(), 
+    descripcion,
+    monto,
+    tipo,
+    categoria,
+    fecha
+  };
+
+  
+  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+  operaciones.push(nuevaOperacion);
+  localStorage.setItem('operaciones', JSON.stringify(operaciones));
+
+  
+  agregarNuevaOperacion(nuevaOperacion);
+
+  
+  document.getElementById('operacion').reset();
+});
+
+function agregarNuevaOperacion(nuevaOperacion) {
+  const container = document.getElementById('containerDescripcionFormularioNuevo');
+
+  
+  container.classList.remove('hidden');
+
+  const divOperacion = document.createElement('div');
+  divOperacion.classList.add('flex', 'justify-between', 'items-center', 'p-[10px]', 'pl-[30px]');
+  
+  divOperacion.innerHTML = `
+    <p>${nuevaOperacion.descripcion}</p>
+    <p>${nuevaOperacion.categoria}</p>
+    <p>${nuevaOperacion.monto}</p>
+    <p>${nuevaOperacion.fecha}</p>
+    <div>
+    <button class="text-cyan-600 p-1 m-2 gap-2 btn-editar" data-id="${nuevaOperacion.id}">Editar</button>
+    <button class="text-cyan-600 p-1 m-2 gap-2 btn-eliminar" data-id="${nuevaOperacion.id}">Eliminar</button>
+    </div>
+  `;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  container.appendChild(divOperacion);
+  document.getElementById('operacion').style.display = 'none';
+  document.querySelector('picture').style.display = 'none';
+  pantallaPrincipal.style.display = 'flex'
+}
