@@ -41,6 +41,7 @@ navBalance.addEventListener('click', function(){
     seccionCategorias.style.display ='none'
      seccionReportes.style.display ='none'
      nuevaOperacion.style.display= 'none'
+     operacion.style.display= 'none'
 
 })
 
@@ -64,7 +65,7 @@ const categoriasIniciales = [
   
 ];
 
-// Función para consultar categorías desde localStorage
+
 const consultarCategorias = () => {
   const categorias = localStorage.getItem('categorias');
   if (categorias) {
@@ -207,73 +208,153 @@ cargarCategoriasEnLista();
 
 
 
-// SECCION DESCRIPCION
-const operacionesBotton = document.getElementById('operacionesBotton')
-const nuevaOperacion = document.getElementById('nueva-operacion')
-const operacion = document.getElementById('operacion')
-operacionesBotton.addEventListener('click', function(e){
-  pantallaPrincipal.style.display = 'none'
-  operacion.style.display = 'flex'
-})
+//seccion operacion
+const operacionesBotton = document.getElementById('operacionesBotton');
+const nuevaOperacion = document.getElementById('nueva-operacion');
+const operacion = document.getElementById('operacion');
 
-document.getElementById('button-agregar-operacion').addEventListener('click', function(e) {
+operacionesBotton.addEventListener('click', function (e) {
+  pantallaPrincipal.style.display = 'none';
+  operacion.style.display = 'flex';
+});
+
+
+const buttonAgregarOperacion = document.getElementById('button-agregar-operacion');
+buttonAgregarOperacion.addEventListener('click', function (e) {
   e.preventDefault();
-
-  const descripcion = document.getElementById('inputOperacion').value.trim();
-  const monto = document.getElementById('input-monto-operacion').value.trim();
+  
+  
+  const descripcion = document.getElementById('inputOperacion').value; 
+  const monto = document.getElementById('input-monto-operacion').value;
   const tipo = document.getElementById('tipo-operacion').value;
   const categoria = document.getElementById('categoriaOperaciones').value;
   const fecha = document.getElementById('input-fecha-operacion').value;
 
-  
   if (!descripcion || !monto || !tipo || !categoria || !fecha) {
-    return; 
+    return;  
   }
 
+  
   const nuevaOperacion = {
     id: uuidv4(), 
-    descripcion,
-    monto,
-    tipo,
-    categoria,
-    fecha
+    descripcion: descripcion,
+    monto: monto,
+    tipo: tipo,
+    categoria: categoria,
+    fecha: fecha
   };
 
   
   const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+
   operaciones.push(nuevaOperacion);
+
+  
   localStorage.setItem('operaciones', JSON.stringify(operaciones));
 
   
-  agregarNuevaOperacion(nuevaOperacion);
+  mostrarOperaciones();
 
-  
   document.getElementById('operacion').reset();
+  operacion.style.display = 'none';
+  pantallaPrincipal.style.display = 'flex';
+
 });
 
-function agregarNuevaOperacion(nuevaOperacion) {
-  const container = document.getElementById('containerDescripcionFormularioNuevo');
 
+function mostrarOperaciones() {
+  const containerDescripcionFormularioNuevo = document.getElementById('containerDescripcionFormularioNuevo');
+  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
   
-  container.classList.remove('hidden');
-
-  const divOperacion = document.createElement('div');
-  divOperacion.classList.add('flex', 'justify-between', 'items-center', 'p-[10px]', 'pl-[30px]');
   
-  divOperacion.innerHTML = `
-    <p>${nuevaOperacion.descripcion}</p>
-    <p>${nuevaOperacion.categoria}</p>
-    <p>${nuevaOperacion.monto}</p>
-    <p>${nuevaOperacion.fecha}</p>
-    <div>
-    <button class="text-cyan-600 p-1 m-2 gap-2 btn-editar" data-id="${nuevaOperacion.id}">Editar</button>
-    <button class="text-cyan-600 p-1 m-2 gap-2 btn-eliminar" data-id="${nuevaOperacion.id}">Eliminar</button>
+  containerDescripcionFormularioNuevo.innerHTML = `
+    <div class="flex gap-[30px] pl-[30px]">
+      <h3 class="mb-[10px]">Descripción</h3>
+      <h3 class="mb-[10px]">Categoría</h3>
+      <h3 class="mb-[10px]">Monto</h3>
+      <h3 class="mb-[10px]">Fecha</h3>
+      <h3>Acciones</h3> 
     </div>
   `;
 
+  
+  if (operaciones.length > 0) {
+    
+    containerDescripcionFormularioNuevo.style.display='flex'
+  }
 
-  container.appendChild(divOperacion);
-  document.getElementById('operacion').style.display = 'none';
-  document.querySelector('picture').style.display = 'none';
-  pantallaPrincipal.style.display = 'flex'
+  
+  operaciones.forEach((operacion) => {
+    containerDescripcionFormularioNuevo.innerHTML += `
+      <div class="flex gap-[30px] pl-[30px]" data-id="${operacion.id}">
+        <p>${operacion.descripcion}</p>
+        <p>${operacion.categoria}</p>
+        <p>${operacion.monto}</p>
+        <p>${operacion.fecha}</p>
+        <div class="flex">
+          <button class="text-cyan-600 p-1 m-2 gap-2 btn-editar" data-id="${operacion.id}">Editar</button>
+          <button class="text-cyan-600 p-1 m-2 gap-2 btn-eliminar" data-id="${operacion.id}">Eliminar</button>
+        </div>
+      </div>
+    `;
+  });
+
+  
+  asignarEventosBotones();
 }
+
+
+function asignarEventosBotones() {
+  
+  document.querySelectorAll('.btn-eliminar').forEach(button => {
+    button.addEventListener('click', function () {
+      const id = this.getAttribute('data-id');
+      eliminarOperacion(id);
+    });
+  });
+
+  
+  document.querySelectorAll('.btn-editar').forEach(button => {
+    button.addEventListener('click', function () {
+      const id = this.getAttribute('data-id');
+      editarOperacion(id);
+       operacion.style.display= 'flex'
+       pantallaPrincipal.style.display= 'none'
+    });
+  });
+}
+
+
+function eliminarOperacion(id) {
+  let operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+
+  
+  operaciones = operaciones.filter(operacion => operacion.id !== id);
+  localStorage.setItem('operaciones', JSON.stringify(operaciones));
+
+  
+  mostrarOperaciones();
+}
+
+
+function editarOperacion(id) {
+  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+
+  const operacionAEditar = operaciones.find(operacion => operacion.id === id);
+
+  if (operacionAEditar) {
+    
+    document.getElementById('inputOperacion').value = operacionAEditar.descripcion;
+    document.getElementById('input-monto-operacion').value = operacionAEditar.monto;
+    document.getElementById('tipo-operacion').value = operacionAEditar.tipo;
+    document.getElementById('categoriaOperaciones').value = operacionAEditar.categoria;
+    document.getElementById('input-fecha-operacion').value = operacionAEditar.fecha;
+    document.getElementById('containerDescripcionFormularioNuevo').classList.add('hidden');
+    document.getElementById('operacion').classList.remove('hidden');
+    
+    eliminarOperacion(id);
+  }
+}
+
+
+document.addEventListener('DOMContentLoaded', mostrarOperaciones);
