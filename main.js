@@ -213,74 +213,51 @@ const operacionesBotton = document.getElementById('operacionesBotton');
 const nuevaOperacion = document.getElementById('nueva-operacion');
 const operacion = document.getElementById('operacion');
 
+
 operacionesBotton.addEventListener('click', function (e) {
   pantallaPrincipal.style.display = 'none';
   operacion.style.display = 'flex';
+
+
 });
 
 
-const buttonAgregarOperacion = document.getElementById('button-agregar-operacion');
-buttonAgregarOperacion.addEventListener('click', function (e) {
-  e.preventDefault();
-  
-  
-  const descripcion = document.getElementById('inputOperacion').value; 
-  const monto = document.getElementById('input-monto-operacion').value;
-  const tipo = document.getElementById('tipo-operacion').value;
-  const categoria = document.getElementById('categoriaOperaciones').value;
-  const fecha = document.getElementById('input-fecha-operacion').value;
-
-  if (!descripcion || !monto || !tipo || !categoria || !fecha) {
-    return;  
-  }
-
-  
-  const nuevaOperacion = {
-    id: uuidv4(), 
-    descripcion: descripcion,
-    monto: monto,
-    tipo: tipo,
-    categoria: categoria,
-    fecha: fecha
-  };
-
-  
+// Función para actualizar los balances de ganancias, gastos y total
+function actualizarBalance() {
   const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
 
-  operaciones.push(nuevaOperacion);
+  let totalGanancias = 0;
+  let totalGastos = 0;
+
+  // Calcular el total de ganancias y gastos
+  operaciones.forEach(operacion => {
+    if (operacion.tipo === 'ganancia') {
+      totalGanancias += parseFloat(operacion.monto);
+    } else if (operacion.tipo === 'gasto') {
+      totalGastos += parseFloat(operacion.monto);
+    }
+  });
+
+  // Actualizar el HTML del balance
+  document.getElementById('balanceGananciaFinal').innerHTML = `<p  class="text-green-600">+ $${totalGanancias.toFixed(2)}</p>`;
+  
+  document.getElementById('gananciaGastosGastosFinal').innerHTML = `<p  class="text-red-600">- $${totalGastos.toFixed(2)}</p>`;
+  document.getElementById('gananciaTotalFinal').innerHTML = `<p>$${(totalGanancias - totalGastos).toFixed(2)}</p>`;
 
   
-  localStorage.setItem('operaciones', JSON.stringify(operaciones));
+}
 
-  
-  mostrarOperaciones();
-
-  document.getElementById('operacion').reset();
-  operacion.style.display = 'none';
-  pantallaPrincipal.style.display = 'flex';
-
-});
-
-
+actualizarBalance();
+console.log(actualizarBalance)
+// Función para mostrar las operaciones y actualizar el balance
 function mostrarOperaciones() {
   const containerDescripcionFormularioNuevo = document.getElementById('containerDescripcionFormularioNuevo');
   const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
-  
-  
-  containerDescripcionFormularioNuevo.innerHTML = `
-    <div class="flex gap-[30px] pl-[30px]">
-      <h3 class="mb-[10px]">Descripción</h3>
-      <h3 class="mb-[10px]">Categoría</h3>
-      <h3 class="mb-[10px]">Monto</h3>
-      <h3 class="mb-[10px]">Fecha</h3>
-      <h3>Acciones</h3> 
-    </div>
-  `;
 
   
+
   if (operaciones.length > 0) {
-    
-    containerDescripcionFormularioNuevo.style.display='flex'
+    containerDescripcionFormularioNuevo.style.display = 'flex';
   }
 
   
@@ -301,11 +278,84 @@ function mostrarOperaciones() {
 
   
   asignarEventosBotones();
+
+  
+  actualizarBalance();
 }
 
 
-function asignarEventosBotones() {
+const buttonAgregarOperacion = document.getElementById('button-agregar-operacion');
+buttonAgregarOperacion.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const descripcion = document.getElementById('inputOperacion').value;
+  const monto = document.getElementById('input-monto-operacion').value;
+  const tipo = document.getElementById('tipo-operacion').value;
+  const categoria = document.getElementById('categoriaOperaciones').value;
+  const fecha = document.getElementById('input-fecha-operacion').value;
+
+  if (!descripcion || !monto || !tipo || !categoria || !fecha) {
+    return;  
+  }
+
+  const nuevaOperacion = {
+    id: uuidv4(),
+    descripcion: descripcion,
+    monto: monto,
+    tipo: tipo,
+    categoria: categoria,
+    fecha: fecha
+  };
+
+  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+  operaciones.push(nuevaOperacion);
+
+  localStorage.setItem('operaciones', JSON.stringify(operaciones));
+
+  mostrarOperaciones();
+  actualizarBalance();
+
+
+  document.getElementById('operacion').reset();
+  operacion.style.display = 'none';
+  pantallaPrincipal.style.display = 'flex';
   
+});
+
+// Función para eliminar una operación
+function eliminarOperacion(id) {
+  let operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+
+  operaciones = operaciones.filter(operacion => operacion.id !== id);
+  localStorage.setItem('operaciones', JSON.stringify(operaciones));
+
+  mostrarOperaciones();
+}
+
+// Función para editar una operación
+function editarOperacion(id) {
+  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+  const operacionAEditar = operaciones.find(operacion => operacion.id === id);
+
+  if (operacionAEditar) {
+    document.getElementById('inputOperacion').value = operacionAEditar.descripcion;
+    document.getElementById('input-monto-operacion').value = operacionAEditar.monto;
+    document.getElementById('tipo-operacion').value = operacionAEditar.tipo;
+    document.getElementById('categoriaOperaciones').value = operacionAEditar.categoria;
+    document.getElementById('input-fecha-operacion').value = operacionAEditar.fecha;
+
+    eliminarOperacion(id);
+  }
+}
+
+// Cargar operaciones al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+  mostrarOperaciones();
+  actualizarBalance(); // También actualiza el balance al cargar la página
+});
+
+// Asignar eventos a los botones de editar y eliminar
+function asignarEventosBotones() {
   document.querySelectorAll('.btn-eliminar').forEach(button => {
     button.addEventListener('click', function () {
       const id = this.getAttribute('data-id');
@@ -313,121 +363,12 @@ function asignarEventosBotones() {
     });
   });
 
-  
   document.querySelectorAll('.btn-editar').forEach(button => {
     button.addEventListener('click', function () {
       const id = this.getAttribute('data-id');
       editarOperacion(id);
-       operacion.style.display= 'flex'
-       pantallaPrincipal.style.display= 'none'
+      operacion.style.display = 'flex';
+      pantallaPrincipal.style.display = 'none';
     });
   });
 }
-
-
-function eliminarOperacion(id) {
-  let operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
-
-  
-  operaciones = operaciones.filter(operacion => operacion.id !== id);
-  localStorage.setItem('operaciones', JSON.stringify(operaciones));
-
-  
-  mostrarOperaciones();
-}
-
-
-function editarOperacion(id) {
-  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
-
-  const operacionAEditar = operaciones.find(operacion => operacion.id === id);
-
-  if (operacionAEditar) {
-    
-    document.getElementById('inputOperacion').value = operacionAEditar.descripcion;
-    document.getElementById('input-monto-operacion').value = operacionAEditar.monto;
-    document.getElementById('tipo-operacion').value = operacionAEditar.tipo;
-    document.getElementById('categoriaOperaciones').value = operacionAEditar.categoria;
-    document.getElementById('input-fecha-operacion').value = operacionAEditar.fecha;
-    document.getElementById('containerDescripcionFormularioNuevo').classList.add('hidden');
-    document.getElementById('operacion').classList.remove('hidden');
-    
-    eliminarOperacion(id);
-  }
-}
-
-
-document.addEventListener('DOMContentLoaded', mostrarOperaciones);
-
-
-//seccion filtros
-// Filtrar operaciones por categoría y tipo
-const selectCategoria = document.getElementById('selectCategoriaFiltros');
-const selectTipo = document.getElementById('tipo-operacion-filtros'); // Asegúrate de tener un select para tipo en tu HTML
-
-// Escuchar cambios en los selects
-selectCategoria.addEventListener('change', filtrarOperaciones);
-selectTipo.addEventListener('change', filtrarOperaciones);
-
-// Función para filtrar operaciones por categoría y tipo
-function filtrarOperaciones() {
-  const categoriaSeleccionada = selectCategoria.value;
-  const tipoSeleccionado = selectTipo.value;
-
-  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
-  const containerDescripcionFormulario = document.getElementById('containerDescripcionFormulario');
-
-  // Ocultar todo el contenido actual en el contenedor
-  const operacionesActuales = containerDescripcionFormulario.querySelectorAll('.operacion');
-  operacionesActuales.forEach(operacion => {
-    operacion.style.display = 'none';  // Oculta todas las operaciones actuales
-  });
-
-  // Crear una sección temporal para mostrar las operaciones filtradas
-  let contenedorFiltrado = document.getElementById('contenedorFiltrado');
-  if (!contenedorFiltrado) {
-    contenedorFiltrado = document.createElement('div');
-    contenedorFiltrado.id = 'contenedorFiltrado';
-    containerDescripcionFormulario.appendChild(contenedorFiltrado);
-  }
-
-  // Limpiar el contenedor de filtrado
-  contenedorFiltrado.innerHTML = `
-    <div class="flex gap-[30px] pl-[30px]">
-      <h3 class="mb-[10px]">Descripción</h3>
-      <h3 class="mb-[10px]">Categoría</h3>
-      <h3 class="mb-[10px]">Monto</h3>
-      <h3 class="mb-[10px]">Fecha</h3>
-      <h3>Acciones</h3>
-    </div>
-  `;
-
-  // Filtrar operaciones según categoría y tipo
-  const operacionesFiltradas = operaciones.filter(operacion => {
-    const coincideCategoria = categoriaSeleccionada === "todas" || operacion.categoria === categoriaSeleccionada;
-    const coincideTipo = tipoSeleccionado === "todos" || operacion.tipo === tipoSeleccionado;
-    return coincideCategoria && coincideTipo;
-  });
-
-  // Mostrar las operaciones filtradas en el contenedor
-  operacionesFiltradas.forEach(operacion => {
-    contenedorFiltrado.innerHTML += `
-      <div class="flex gap-[30px] pl-[30px] operacion" data-id="${operacion.id}">
-        <p>${operacion.descripcion}</p>
-        <p>${operacion.categoria}</p>
-        <p>${operacion.monto}</p>
-        <p>${operacion.fecha}</p>
-        <div class="flex">
-          <button class="text-cyan-600 p-1 m-2 gap-2 btn-editar" data-id="${operacion.id}">Editar</button>
-          <button class="text-cyan-600 p-1 m-2 gap-2 btn-eliminar" data-id="${operacion.id}">Eliminar</button>
-        </div>
-      </div>
-    `;
-  });
-
-  // Asignar eventos a los botones de editar y eliminar de las operaciones filtradas
-  asignarEventosBotones();
-}
-
-// Inicialmente cargar todas las operaciones
-mostrarOperaciones();

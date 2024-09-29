@@ -10,21 +10,21 @@
 
   <body>
     <header>
-      <nav class="flex justify-between items-center bg-emerald-300 p-[30px]">
+      <nav id="navNav" class="flex justify-between items-center bg-emerald-300 p-[30px]">
         <div class="flex items-center">
           <img src="imagenes/wallet_25330.ico" class="object-cover w-[32px]" />
           <h1 class="p-[10px] text-[32px]">AhorrAda</h1>
         </div>
-        <button id="botonNav" class="botonNav">
+        <button id="botonNav" class="hidden botonNav">
           <img
             src="imagenes/3844438-hamburger-menu-more-navigation_110319.png"
             alt="tres rayas verticales"
             class="object-cover"
           />
         </button>
-        <ul id="ulNav" class="hidden">
+        <ul id="ulNav" class="flex ">
           <li class="ml-auto">
-            <button id="navBotonCerrar">Cerrar</button>
+            <button id="navBotonCerrar" class="hidden navBotonCerrar">Cerrar</button>
           </li>
 
           <li class="flex items-center">
@@ -75,7 +75,7 @@
                 <h3>Ganancia</h3>
               </div>
               <div id="balanceGananciaFinal">
-                <p>+ $ 0</p>
+                <p class="text-green-600">+ $ 0</p>
               </div>
             </div>
 
@@ -84,7 +84,7 @@
                 <h3>Gastos</h3>
               </div>
               <div id="gananciaGastosGastosFinal">
-                <p>- $ 0</p>
+                <p class="text-red-600">- $ 0</p>
               </div>
             </div>
             <div id="gananciaTotal" class="flex justify-between my-2">
@@ -112,12 +112,12 @@
             <div class="w-[100%] my-2">
               <h3>Tipos</h3>
               <select
-                id="tipo"
+                id="tipo1"
                 class="w-[80%] block border-[0.5px] w-full rounded shadow-sm my-2 p-1 focus:outline-none focus:border-emerald-500-0.5 focus:shadow-lg focus:ring-1 focus:ring-emerald-500"
               >
-                <option value="gastos">Gastos</option>
-                <option value="ganancia">Ganancia</option>
-                <option value="todos">Todos</option>
+                <option value="gastos1">Gastos</option>
+                <option value="ganancia1">Ganancia</option>
+                <option value="todos1">Todos</option>
               </select>
             </div>
             <div class="w-[100%] my-2">
@@ -181,7 +181,7 @@
             </picture>
             <section id="containerDescripcionFormulario" class="mt-[50px]">
               <div id="containerDescripcionFormularioNuevo" class="flex flex-col space-y-4 hidden">
-                <div class="flex gap-[30px] pl-[30px]">
+                <div id="containerDescripcionFormularioNuevoDiv" class="flex gap-[30px] pl-[30px]">
                   <h3 class="mb-[10px]">Descripción</h3>
                   <h3 class="mb-[10px]">Categoría</h3>
                   <h3 class="mb-[10px]">Monto</h3>
