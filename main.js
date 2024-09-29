@@ -358,3 +358,76 @@ function editarOperacion(id) {
 
 
 document.addEventListener('DOMContentLoaded', mostrarOperaciones);
+
+
+//seccion filtros
+// Filtrar operaciones por categoría y tipo
+const selectCategoria = document.getElementById('selectCategoriaFiltros');
+const selectTipo = document.getElementById('tipo-operacion-filtros'); // Asegúrate de tener un select para tipo en tu HTML
+
+// Escuchar cambios en los selects
+selectCategoria.addEventListener('change', filtrarOperaciones);
+selectTipo.addEventListener('change', filtrarOperaciones);
+
+// Función para filtrar operaciones por categoría y tipo
+function filtrarOperaciones() {
+  const categoriaSeleccionada = selectCategoria.value;
+  const tipoSeleccionado = selectTipo.value;
+
+  const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
+  const containerDescripcionFormulario = document.getElementById('containerDescripcionFormulario');
+
+  // Ocultar todo el contenido actual en el contenedor
+  const operacionesActuales = containerDescripcionFormulario.querySelectorAll('.operacion');
+  operacionesActuales.forEach(operacion => {
+    operacion.style.display = 'none';  // Oculta todas las operaciones actuales
+  });
+
+  // Crear una sección temporal para mostrar las operaciones filtradas
+  let contenedorFiltrado = document.getElementById('contenedorFiltrado');
+  if (!contenedorFiltrado) {
+    contenedorFiltrado = document.createElement('div');
+    contenedorFiltrado.id = 'contenedorFiltrado';
+    containerDescripcionFormulario.appendChild(contenedorFiltrado);
+  }
+
+  // Limpiar el contenedor de filtrado
+  contenedorFiltrado.innerHTML = `
+    <div class="flex gap-[30px] pl-[30px]">
+      <h3 class="mb-[10px]">Descripción</h3>
+      <h3 class="mb-[10px]">Categoría</h3>
+      <h3 class="mb-[10px]">Monto</h3>
+      <h3 class="mb-[10px]">Fecha</h3>
+      <h3>Acciones</h3>
+    </div>
+  `;
+
+  // Filtrar operaciones según categoría y tipo
+  const operacionesFiltradas = operaciones.filter(operacion => {
+    const coincideCategoria = categoriaSeleccionada === "todas" || operacion.categoria === categoriaSeleccionada;
+    const coincideTipo = tipoSeleccionado === "todos" || operacion.tipo === tipoSeleccionado;
+    return coincideCategoria && coincideTipo;
+  });
+
+  // Mostrar las operaciones filtradas en el contenedor
+  operacionesFiltradas.forEach(operacion => {
+    contenedorFiltrado.innerHTML += `
+      <div class="flex gap-[30px] pl-[30px] operacion" data-id="${operacion.id}">
+        <p>${operacion.descripcion}</p>
+        <p>${operacion.categoria}</p>
+        <p>${operacion.monto}</p>
+        <p>${operacion.fecha}</p>
+        <div class="flex">
+          <button class="text-cyan-600 p-1 m-2 gap-2 btn-editar" data-id="${operacion.id}">Editar</button>
+          <button class="text-cyan-600 p-1 m-2 gap-2 btn-eliminar" data-id="${operacion.id}">Eliminar</button>
+        </div>
+      </div>
+    `;
+  });
+
+  // Asignar eventos a los botones de editar y eliminar de las operaciones filtradas
+  asignarEventosBotones();
+}
+
+// Inicialmente cargar todas las operaciones
+mostrarOperaciones();
