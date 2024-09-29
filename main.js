@@ -222,14 +222,14 @@ operacionesBotton.addEventListener('click', function (e) {
 });
 
 
-// Función para actualizar los balances de ganancias, gastos y total
+
 function actualizarBalance() {
   const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
 
   let totalGanancias = 0;
   let totalGastos = 0;
 
-  // Calcular el total de ganancias y gastos
+  
   operaciones.forEach(operacion => {
     if (operacion.tipo === 'ganancia') {
       totalGanancias += parseFloat(operacion.monto);
@@ -248,8 +248,7 @@ function actualizarBalance() {
 }
 
 actualizarBalance();
-console.log(actualizarBalance)
-// Función para mostrar las operaciones y actualizar el balance
+
 function mostrarOperaciones() {
   const containerDescripcionFormularioNuevo = document.getElementById('containerDescripcionFormularioNuevo');
   const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
@@ -322,7 +321,7 @@ buttonAgregarOperacion.addEventListener('click', function (e) {
   
 });
 
-// Función para eliminar una operación
+
 function eliminarOperacion(id) {
   let operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
 
@@ -332,7 +331,7 @@ function eliminarOperacion(id) {
   mostrarOperaciones();
 }
 
-// Función para editar una operación
+
 function editarOperacion(id) {
   const operaciones = JSON.parse(localStorage.getItem('operaciones')) || [];
   const operacionAEditar = operaciones.find(operacion => operacion.id === id);
@@ -348,13 +347,13 @@ function editarOperacion(id) {
   }
 }
 
-// Cargar operaciones al cargar la página
+
 document.addEventListener('DOMContentLoaded', function() {
   mostrarOperaciones();
-  actualizarBalance(); // También actualiza el balance al cargar la página
+  actualizarBalance(); 
 });
 
-// Asignar eventos a los botones de editar y eliminar
+
 function asignarEventosBotones() {
   document.querySelectorAll('.btn-eliminar').forEach(button => {
     button.addEventListener('click', function () {
